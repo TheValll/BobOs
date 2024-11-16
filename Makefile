@@ -6,9 +6,8 @@ BUILD_DIR = build
 floppy_img: $(BUILD_DIR)/main.img
 $(BUILD_DIR)/main.img: bootloader kernel
 	dd if=/dev/zero of=$(BUILD_DIR)/main.img bs=512 count=2880
-	mkfs.fat -F 12 -n "BOBOS" $(BUILD_DIR)/main.img
-	dd i=-$(BUILD_DIR)/bootloader.bin of=$(BUILD_DIR)/main.img conv=notrunc
-	mcopy -i $(BUILD_DIR)/main.img $(BUILD_DIR)/kernel.bin "::kernel.bin"
+	mformat -i $(BUILD_DIR)/main.img -f 1440 -t 80 -h 2 -n 18 -v "BOBOS" ::
+	mcopy -i $(BUILD_DIR)/main.img $(BUILD_DIR)/kernel.bin ::/kernel.bin
 
 bootloader: $(BUILD_DIR)/bootloader.bin
 $(BUILD_DIR)/bootloader.bin:
